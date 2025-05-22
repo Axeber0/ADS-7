@@ -22,6 +22,7 @@ class Train {
     void toggleLight() {
         entry->light = !entry->light;
     }
+
  public:
     Train() : entry(nullptr), operations(0) {}
     ~Train() {
