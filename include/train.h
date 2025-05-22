@@ -1,23 +1,22 @@
 // Copyright 2022 NNTU-CS
 #ifndef INCLUDE_TRAIN_H_
 #define INCLUDE_TRAIN_H_
-#include <iostream>
 
 class Train {
     struct Car {
         bool light;
-        Car* forward;
-        Car* backward;
-        explicit Car(bool b) : light(b), forward(nullptr), backward(nullptr) {}
+        Car* next;
+        Car* prev;
+        explicit Car(bool b) : light(b), next(nullptr), prev(nullptr) {}
     };
     Car* entry;
     int operations;
     void go() {
-        entry = entry->forward;
+        entry = entry->next;
         operations++;
     }
     void back() {
-        entry = entry->backward;
+        entry = entry->prev;
         operations++;
     }
     void toggleLight() {
@@ -28,9 +27,9 @@ class Train {
     Train() : entry(nullptr), operations(0) {}
     ~Train() {
         if (!entry) return;
-        Car* traveler = entry->forward;
+        Car* traveler = entry->next;
         while (traveler != entry) {
-            Car* next = traveler->forward;
+            Car* next = traveler->next;
             delete traveler;
             traveler = next;
         }
@@ -40,14 +39,14 @@ class Train {
         Car* newCar = new Car{lightState};
         if (!entry) {
             entry = newCar;
-            entry->forward = entry;
-            entry->backward = entry;
+            entry->next = entry;
+            entry->prev = entry;
       } else {
-            Car* last = entry->backward;
-            newCar->backward = last;
-            last->forward = newCar;
-            entry->backward = newCar;
-            newCar->forward = entry;
+            Car* last = entry->prev;
+            newCar->prev = last;
+            last->next = newCar;
+            entry->prev = newCar;
+            newCar->next = entry;
       }
     }
         int getLength() {
@@ -60,7 +59,7 @@ class Train {
         while (true) {
             int step = 0;
             while (true) {
-                cur = cur->forward;
+                cur = cur->next;
                 operations++;
                 step++;
                 if (cur->light || cur == entry) break;
@@ -68,7 +67,7 @@ class Train {
             if (cur == entry && !cur->light) break;
             if (cur->light) cur->light = false;
             for (int i = 0; i < step; i++) {
-                cur = cur->backward;
+                cur = cur->prev;
                 operations++;
             }
             if (!cur->light) {
