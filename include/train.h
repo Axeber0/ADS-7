@@ -48,7 +48,7 @@ class Train {
             newCar->forward = entry;
       }
     }
-        int Train::getLength() {
+        int getLength() {
         if (!entry) return 0;
         Car* cur = entry;
         if (!cur->light) {
