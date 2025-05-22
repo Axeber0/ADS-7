@@ -49,35 +49,37 @@ class Train {
       }
     }
     int getLength() {
-        operations = 0;
-        bool allDark = true;
+        resetCounters();
         Car* start = entry;
+        bool allSame = true;
+        bool firstLight = start->light;
         do {
-            if (start->light) {
-                allDark = false;
+            if (start->light != firstLight) {
+                allSame = false;
                 break;
             }
             start = start->forward;
             operations++;
         } while (start != entry);
-        if (allDark) {
+        if (allSame) {
             int size = 1;
-            while (start->forward != entry) {
-                start = start->forward;
-                operations++;
+            Car* current = entry->forward;
+            while (current != entry) {
                 size++;
+                current = current->forward;
+                operations++;
             }
             return size;
         }
-        entry->light = false;
-
+        entry->light = !entry->light;
         int counter = 0;
         while (true) {
             for (int i = 0; i <= counter; i++) {
-                go();
+                entry = entry->forward;
+                operations++;
             }
-            if (entry->light) {
-                toggleLight();
+            if (entry->light == !firstLight) {
+                entry->light = firstLight;
                 counter = 0;
             } else {
                 counter++;
