@@ -35,17 +35,18 @@ class Train {
         delete entry;
     }
     void addCar(bool lightState) {
-        Car* newCar = new Car(lightState);
+        Car* newCar = new Car{lightState};
         if (!entry) {
             entry = newCar;
             entry->forward = entry;
             entry->backward = entry;
-        } else {
-            newCar->forward = entry;
-            newCar->backward = entry->backward;
-            entry->backward->forward = newCar;
+      } else {
+            Car* last = entry->backward;
+            newCar->backward = last;
+            last->forward = newCar;
             entry->backward = newCar;
-        }
+            newCar->forward = entry;
+      }
     }
     int getLength() {
         operations = 0;
