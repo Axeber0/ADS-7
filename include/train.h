@@ -60,7 +60,7 @@ class Train {
             operations++;
         } while (start != entry);
         if (allDark) {
-            int size = 1;
+            uint64_t size = 1;
             while (start->forward != entry) {
                 start = start->forward;
                 operations++;
