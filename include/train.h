@@ -8,7 +8,7 @@ class Train {
         bool light;
         Car* forward;
         Car* backward;
-       explicit Car(bool b) : light(b), forward(nullptr), backward(nullptr) {}
+        explicit Car(bool b) : light(b), forward(nullptr), backward(nullptr) {}
     };
     Car* entry;
     int operations;
