@@ -77,7 +77,7 @@ class Train {
         return len;
     }
     int getOpCount() const {
-        return operations+1;
+        return operations;
     }
     void resetCounters() {
         operations = 0;
