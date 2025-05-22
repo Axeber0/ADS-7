@@ -7,7 +7,7 @@ class Train {
         bool light;
         Car* forward;
         Car* backward;
-        Car(bool b) : light(b), forward(nullptr), backward(nullptr) {}
+       explicit Car(bool b) : light(b), forward(nullptr), backward(nullptr) {}
     };
     Car* entry;
     int operations;
@@ -22,7 +22,7 @@ class Train {
     void toggleLight() {
         entry->light = !entry->light;
     }
-public:
+ public:
     Train() : entry(nullptr), operations(0) {}
     ~Train() {
         if (!entry) return;
@@ -78,8 +78,7 @@ public:
             if (entry->light) {
                 toggleLight();
                 counter = 0;
-            }
-            else {
+            } else {
                 counter++;
             }
             if (counter > operations) {
@@ -89,7 +88,7 @@ public:
         return operations;
     }
     int getOpCount() const {
-        return operations;
+        return operations+1;
     }
     void resetCounters() {
         operations = 0;
