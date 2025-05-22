@@ -48,47 +48,33 @@ class Train {
             newCar->forward = entry;
       }
     }
-    int getLength() {
-        resetCounters();
-        Car* start = entry;
-        bool allSame = true;
-        bool firstLight = start->light;
-        do {
-            if (start->light != firstLight) {
-                allSame = false;
-                break;
-            }
-            start = start->forward;
-            operations++;
-        } while (start != entry);
-        if (allSame) {
-            int size = 1;
-            Car* current = entry->forward;
-            while (current != entry) {
-                size++;
-                current = current->forward;
-                operations++;
-            }
-            return size;
+        int Train::getLength() {
+        if (!entry) return 0;
+        Car* cur = entry;
+        if (!cur->light) {
+            cur->light = true;
         }
-        entry->light = !entry->light;
-        int counter = 0;
+        int len = 0;
         while (true) {
-            for (int i = 0; i <= counter; i++) {
-                entry = entry->forward;
+            int step = 0;
+            while (true) {
+                cur = cur->forward;
+                operations++;
+                step++;
+                if (cur->light || cur == entry) break;
+            }
+            if (cur == entry && !cur->light) break;
+            if (cur->light) cur->light = false;
+            for (int i = 0; i < step; i++) {
+                cur = cur->backward;
                 operations++;
             }
-            if (entry->light == !firstLight) {
-                entry->light = firstLight;
-                counter = 0;
-            } else {
-                counter++;
-            }
-            if (counter > operations) {
+            if (!cur->light) {
+                len = step;
                 break;
             }
         }
-        return operations;
+        return len;
     }
     int getOpCount() const {
         return operations+1;
